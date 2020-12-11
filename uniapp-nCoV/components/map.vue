@@ -163,7 +163,7 @@ export default {
 	},
 	created() {
 		this.getData();
-		this.getTableData();
+		// this.getTableData();
 		_self = this;
 		//#ifdef MP-ALIPAY
 		uni.getSystemInfo({
@@ -214,20 +214,20 @@ export default {
 		handleShow(index) {
 			this.areaTableData[index].isShowCities = !this.areaTableData[index].isShowCities;
 		},
-		// 请求获取疫情地区表单数据
-		getTableData() {
-			uni.request({
-				method: 'GET',
-				url: 'http://121.42.14.221:3002/cities',
-				success: res => {
-					res.data.newslist.map(item => {
-						item.isShowCities = false;
-						return item;
-					});
-					this.areaTableData = res.data.newslist;
-				}
-			});
-		},
+		// // 请求获取疫情地区表单数据
+		// getTableData() {
+		// 	uni.request({
+		// 		method: 'GET',
+		// 		url: 'http://127.0.0.1:3001/cities',
+		// 		success: res => {
+		// 			res.data.newslist.map(item => {
+		// 				item.isShowCities = false;
+		// 				return item;
+		// 			});
+		// 			this.areaTableData = res.data.newslist;
+		// 		}
+		// 	});
+		// },
 		// 获取疫情地球数据
 		async getServerData() {
 			let cMap = { series: [] };
@@ -236,12 +236,20 @@ export default {
 				dataType: 'json',
 				header: { 'content-type': 'application/x-www-form-urlencoded' },
 				success: function(res) {
+					console.log(res)
 					cMap.series = res.data.features;
 					uni.request({
 						method: 'GET',
 						url:"http://127.0.0.1:3001/cities",
 						dataType: 'json',
 						success: res => {
+							res.data.newslist.map(item => {
+								item.isShowCities = false;
+								return item;
+							});
+							this.areaTableData = res.data.newslist;
+							console.log(this.areaTableData)
+							
 							let datas = res.data.newslist;
 							let series = cMap.series.map(province => {
 								for (var i = 0; i < datas.length; i++) {
@@ -253,6 +261,7 @@ export default {
 							});
 							cMap.series = series;
 							_self.$nextTick(() => {
+								console.log(cMap)
 								_self.showMap('canvasMap', cMap);
 							});
 						},
@@ -300,7 +309,10 @@ export default {
 			console.log(canvaMap);
 			canvaMap.showToolTip(e, {
 				format: function(item) {
-					return `${item.properties.name}: 确诊${item.confirmedCount}人`;
+					if (item.properties.name === '台湾省') {
+						return "暂无数据"
+					}
+					return `${item.properties.name}: 确诊${item.currentConfirmedCount}人`;
 				}
 			});
 		}

@@ -128,7 +128,7 @@
 				});
 			},
 			// 这里仅作为示例传入两个参数，cid为canvas-id,newdata为更新的数据，需要更多参数请自行修改
-			changeData(cid,newdata) {
+			changeData(cid, newdata) {
 				canvases[cid].updateData({
 					series: newdata.series,
 					categories: newdata.categories
