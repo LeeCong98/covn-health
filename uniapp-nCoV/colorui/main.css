@@ -6,7 +6,7 @@
         初始化
  ==================== */
 body {
-	background-color: #f1f1f1;
+	background-color: #ffffff;
 	font-size: 28upx;
 	color: #333333;
 	font-family: Helvetica Neue, Helvetica, sans-serif;
@@ -3855,7 +3855,7 @@ scroll-view.cu-steps .cu-item {
 .text-blue,
 .line-blue,
 .lines-blue {
-	color: #0081ff;
+	color: #4cd964;
 }
 
 .text-purple,

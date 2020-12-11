@@ -13,5 +13,9 @@
     "echarts": "^4.6.0",
     "mpvue-echarts": "^0.3.2",
     "zrender": "^4.2.0"
+  },
+  "devDependencies": {
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.1.0"
   }
 }
