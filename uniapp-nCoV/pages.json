@@ -10,6 +10,18 @@
       "style": {
         "navigationBarTitleText": "uni-app"
       }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "login"
+      }
+    },
+    {
+      "path": "pages/userInfo/index",
+      "style": {
+        "navigationBarTitleText": "user"
+      }
     }
   ],
   "globalStyle": {

@@ -51,7 +51,7 @@ export default {
 		getData() {
 			uni.request({
 				method: 'GET',
-				url: 'http://121.42.14.221:3002/Timeline',
+				url: 'http://127.0.0.1:3001/Timeline',
 				success: res => {
 					setTimeout(() => {
 						this.loading = true

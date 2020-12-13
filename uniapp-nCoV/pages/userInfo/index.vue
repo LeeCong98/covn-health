@@ -1,6 +1,6 @@
 <template>
   <view class="wrap">
-    <u-navbar title-color="#fff" back-icon-color="#ffffff" :is-fixed="true" :is-back="false" :background="background"
+    <u-navbar title-color="#fff" back-icon-color="#ffffff" :is-fixed="true" :is-back="true" :background="background"
       :back-text-style="{color: '#fff'}" :title="title">
     </u-navbar>
     <u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
@@ -16,6 +16,10 @@
         label="手机号码" prop="phone" label-width="150">
         <u-input :border="border" placeholder="请输入手机号" v-model="model.phone" type="number"></u-input>
       </u-form-item>
+      <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" :label-position="labelPosition"
+        label="身份证号" prop="phone" label-width="150">
+        <u-input :border="border" placeholder="请输入身份证号" v-model="model.phone" type="number"></u-input>
+      </u-form-item>
       <!-- <u-form-item :label-position="labelPosition" label="简介" prop="intro">
         <u-input type="textarea" :border="border" placeholder="请填写简介" v-model="model.intro" />
       </u-form-item>
@@ -30,35 +34,15 @@
           <u-checkbox v-model="item.checked" v-for="(item, index) in checkboxList" :key="index" :name="item.name">{{ item.name }}</u-checkbox>
         </u-checkbox-group>
       </u-form-item> -->
-      <u-form-item :label-position="labelPosition" label="所处位置" prop="region" label-width="150">
-        <!-- <u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区"
-          @click="pickerShow = true"></u-input> -->
-        <u-input :border="border" :disabled="true" v-model="model.address" type="text"></u-input>
+     <u-form-item :label-position="labelPosition" label="常驻区域" prop="region" label-width="150">
+        <u-input :border="border" type="select" :select-open="pickerShow" v-model="model.region" placeholder="请选择地区"
+          @click="pickerShow = true"></u-input>
       </u-form-item>
-      <u-form-item :label-position="labelPosition" label="健康状况" prop="payType" label-width="150">
-        <u-radio-group v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
-          <u-radio shape="circle" v-for="(item, index) in radioList" :key="index" :name="item.name">{{ item.name }}</u-radio>
-        </u-radio-group>
-      </u-form-item>
-      <u-form-item :label-position="labelPosition" label="是否隔离" prop="payType" label-width="150">
-        <u-radio-group v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
-          <u-radio shape="circle" v-for="(item, index) in radioList" :key="index" :name="item.name">{{ item.name }}</u-radio>
-        </u-radio-group>
-      </u-form-item>
-     <!-- <u-form-item :label-position="labelPosition" label="商品类型" prop="goodsType" label-width="150">
-        <u-input :border="border" type="select" :select-open="selectShow" v-model="model.goodsType" placeholder="请选择商品类型"
-          @click="selectShow = true"></u-input>
-      </u-form-item> -->
-     <!-- <u-form-item :label-position="labelPosition" label="验证码" prop="code" label-width="150">
-        <u-input :border="border" placeholder="请输入验证码" v-model="model.code" type="text"></u-input>
-        <u-button slot="right" type="success" size="mini" @click="getCode">{{codeTips}}</u-button>
-      </u-form-item> -->
-      <!-- 此处switch的slot为right，如果不填写slot名，也即<u-switch v-model="model.remember"></u-switch>，将会左对齐 -->
     </u-form>
     <view class="agreement">
-      <u-checkbox v-model="check" @change="checkboxChange"></u-checkbox>
+      <!-- <u-checkbox v-model="check" @change="checkboxChange"></u-checkbox> -->
       <view class="agreement-text">
-        勾选代表同意uView的版权协议
+        请如实填写个人信息，提交成功后无法修改
       </view>
     </view>
     <u-button @click="submit">提交</u-button>
@@ -95,7 +79,7 @@
     data() {
       let that = this;
       return {
-        title: '健康打卡',
+        title: '个人信息',
         right: false,
         showAction: false,
         background: {
@@ -306,9 +290,6 @@
           },
           {
             text: '女'
-          },
-          {
-            text: '保密'
           }
         ],
         actionSheetShow: false,
