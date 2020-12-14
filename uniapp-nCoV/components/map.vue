@@ -11,12 +11,12 @@
 			<!-- 顶部导航 -->
 			<cu-custom bgColor="bg-blue" :isBack="false"><block slot="content">疫情地图</block></cu-custom>
 			<!-- banner -->
-			<image src="https://img1.dxycdn.com/2020/0314/863/3401956761707181858-2.png" mode="widthFix" style="width: 100%;"></image>
+			<image src="../static/banner.png" mode="widthFix" style="width: 100%;"></image>
 			<!-- 数据标题 -->
 			<view class="data-statement flex justify-between">
 				<view class="statement-title">
 					<view class="padding-top-xs padding-left-xs text-xl text-black text-bold">全国疫情状况</view>
-					<view class="padding-left-xs padding-bottom-xs text-sm text-gray">截至 2020-02-08 17:22:44</view>
+					<view class="padding-left-xs padding-bottom-xs text-sm text-gray">截至 {{ getUpdatedTime() }}</view>
 				</view>
 				<view class="explain text-sm padding-top-xs padding-right-xs text-gray text-bold" @tap="showModal" data-target="Modal">数据说明</view>
 			</view>
@@ -49,7 +49,7 @@
 					<view class="tag flex text-black padding-bottom-xs justify-center text-sm text-bold">{{ item.title }}</view>
 					<view class="top flex align-center text-xs justify-center">
 						<view class="text-grey">较昨天</view>
-						<view class="text-red">+{{ item.num_sub }}</view>
+						<view class="text-red">{{ item.num_sub }}</view>
 					</view>
 				</view>
 			</view>
@@ -162,7 +162,9 @@ export default {
 		};
 	},
 	created() {
+		// 获取地图疫情数据列表
 		this.getData();
+		// 获取分省市疫情数据列表
 		this.getTableData();
 		_self = this;
 		//#ifdef MP-ALIPAY
@@ -178,7 +180,14 @@ export default {
 		//#endif
 		this.cWidth = uni.upx2px(750);
 		this.cHeight = uni.upx2px(750);
-		this.getServerData();
+		// this.getServerData();
+	},
+	watch: {
+		areaTableData (val, oldVal) {
+			if (val.length > 0) {
+				this.getServerData(val)
+			}
+		}
 	},
 	methods: {
 		getData() {
@@ -189,17 +198,19 @@ export default {
 					setTimeout(() => {
 						this.loadiing = true;
 					});
-					this.dataed[0].num = res.data.confirmedCount; //现确诊数
-					this.dataed[0].num_sub = res.data.confirmedIncr; //较比昨天增长数
-					this.dataed[1].num = res.data.suspectedCount; //疑诊数
-					this.dataed[1].num_sub = res.data.suspectedIncr; //较比昨天疑诊增加数
-					this.dataed[2].num = res.data.deadCount; //死亡数
-					this.dataed[2].num_sub = res.data.deadIncr; //较昨天死亡增加数
-					this.dataed[3].num = res.data.curedCount; //治愈人数
-					this.dataed[3].num_sub = res.data.curedIncr; //较比昨天治愈人数增长数
+					let daats = res.data
+					this.dataed[0].num = daats.currentConfirmedCount; //现确诊数
+					this.dataed[0].num_sub = parseInt(daats.currentConfirmedIncr) >= 0 ? '+' + daats.currentConfirmedIncr : daats.currentConfirmedIncr; //较比昨天增长数
+					this.dataed[1].num = daats.suspectedCount; //疑诊数
+					this.dataed[1].num_sub = parseInt(daats.suspectedIncr) >= 0 ? '+' + daats.suspectedIncr : daats.suspectedIncr; //较比昨天疑诊增加数
+					this.dataed[2].num = daats.deadCount; //死亡数
+					this.dataed[2].num_sub = parseInt(daats.deadIncr) >= 0 ? '+' + daats.deadIncr : daats.deadIncr; //较昨天死亡增加数
+					this.dataed[3].num = daats.curedCount; //治愈人数
+					this.dataed[3].num_sub = parseInt(daats.curedIncr) >= 0 ? '+' + daats.curedIncr : daats.curedIncr; //较比昨天治愈人数增长数
 					// 走势图
-					this.quanguoTrendChart = res.data.quanguoTrendChart; //全国疫情走势图
-					this.hbFeiHbTrendChart = res.data.hbFeiHbTrendChart; //湖北疫情走势图
+					this.quanguoTrendChart = daats.quanguoTrendChart; //全国疫情走势图
+					console.log(daats.quanguoTrendChart)
+					this.hbFeiHbTrendChart = daats.hbFeiHbTrendChart; //湖北疫情走势图
 				}
 			});
 		},
@@ -218,47 +229,42 @@ export default {
 		getTableData() {
 			uni.request({
 				method: 'GET',
-				url: 'http://121.42.14.221:3002/cities',
+				url: 'http://127.0.0.1:3001/cities',
 				success: res => {
 					res.data.newslist.map(item => {
 						item.isShowCities = false;
 						return item;
 					});
 					this.areaTableData = res.data.newslist;
+				},
+				fail: () => {
+					_self.tips = '网络错误，小程序端请检查合法域名';
 				}
 			});
 		},
 		// 获取疫情地球数据
-		async getServerData() {
+		async getServerData(newslist) {
+			console.log(newslist)
 			let cMap = { series: [] };
 			await uni.request({
 				url: 'http://127.0.0.1:3001/map',
 				dataType: 'json',
 				header: { 'content-type': 'application/x-www-form-urlencoded' },
 				success: function(res) {
+					console.log(res)
 					cMap.series = res.data.features;
-					uni.request({
-						method: 'GET',
-						url:"http://127.0.0.1:3001/cities",
-						dataType: 'json',
-						success: res => {
-							let datas = res.data.newslist;
-							let series = cMap.series.map(province => {
-								for (var i = 0; i < datas.length; i++) {
-									if (datas[i].provinceName === province.properties.name) {
-										return { ...province, ...datas[i] };
-									}
-								}
-								return province;
-							});
-							cMap.series = series;
-							_self.$nextTick(() => {
-								_self.showMap('canvasMap', cMap);
-							});
-						},
-						fail: () => {
-							_self.tips = '网络错误，小程序端请检查合法域名';
+					let series = cMap.series.map(province => {
+						for (var i = 0; i < newslist.length; i++) {
+							if (newslist[i].provinceName === province.properties.name) {
+								return { ...province, ...newslist[i] };
+							}
 						}
+						return province;
+					});
+					cMap.series = series;
+					_self.$nextTick(() => {
+						console.log(cMap)
+						_self.showMap('canvasMap', cMap);
 					});
 				},
 				fail: () => {
@@ -300,9 +306,22 @@ export default {
 			console.log(canvaMap);
 			canvaMap.showToolTip(e, {
 				format: function(item) {
-					return `${item.properties.name}: 确诊${item.confirmedCount}人`;
+					if (item.properties.name === '台湾省') {
+						return "暂无数据"
+					}
+					return `${item.properties.name}: 确诊${item.currentConfirmedCount}人`;
 				}
 			});
+		},
+		getUpdatedTime () {
+			let date = new Date()
+			let year = date.getFullYear()
+			let month  = date.getMonth() + 1 < 10 ? '0' + date.getMonth() + 1: date.getMonth() + 1 
+			let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate() 
+			let hours = date.getHours()  < 10 ? '0' + date.getHours() : date.getHours()
+			let minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+			let seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+			return `${year}-${month}-${day} ${hours}:${minutes }:${seconds}`
 		}
 	}
 };

@@ -29,14 +29,14 @@ module.exports = function(){
     }).catch(()=>{
         console.log("请求失败")
     })
-    // 获取疫情按时间线获取事件
-    request("http://49.232.173.220:3001/data/getTimelineService").then((res)=>{
-        fs.writeFile(path.resolve(__dirname, '../data/Timeline.json'),res,'utf8',(err)=>{
+    // 获取腾讯疫情按时间线获取事件
+    request("https://api.inews.qq.com/newsqa/v1/automation/modules/list?modules=FAutoNewsArticleList").then((res)=>{
+        fs.writeFile(path.resolve(__dirname, '../data/Timeline.json'), JSON.stringify(JSON.parse(res).data.FAutoNewsArticleList),'utf8',(err)=>{
             if(err) throw err;
             console.log("按时间线获取事件数据保存成功")
         })
     }).catch(()=>{
-        console.log("请求失败")
+        console.log("按时间线获取事件数据请求失败")
     })
     // 获取疫情最新辟谣信息
     request("http://49.232.173.220:3001/data/getIndexRumorList").then((res)=>{

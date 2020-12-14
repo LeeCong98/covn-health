@@ -24,15 +24,16 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.real-data-page.data-v-15be59a8 {
+.real-data-page.data-v-4d1c9859 {
   padding-bottom: 100rpx;
 }
-.cu-timeline > .cu-item.data-v-15be59a8::before {
+.cu-timeline > .cu-item.data-v-4d1c9859::before {
   color: #0081ff;
 }
-.cu-timeline > .cu-item.data-v-15be59a8::after {
+.cu-timeline > .cu-item.data-v-4d1c9859::after {
   background-color: #0081ff;
   width: 4rpx;
-  border-radius: 100%;
+  -webkit-border-radius: 100%;
+          border-radius: 100%;
 }
 

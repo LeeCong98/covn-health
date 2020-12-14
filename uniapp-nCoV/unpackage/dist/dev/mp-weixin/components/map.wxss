@@ -24,36 +24,38 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.map-page.data-v-23a5a742 {
+.map-page.data-v-49c7631e {
   padding-bottom: 100rpx;
 }
-.map-page .qiun-charts.data-v-23a5a742 {
-    width: 750rpx;
-    height: 700rpx;
-    background-color: #ffffff;
+.map-page .qiun-charts.data-v-49c7631e {
+  width: 750rpx;
+  height: 700rpx;
+  background-color: #ffffff;
 }
-.map-page .qiun-charts .charts.data-v-23a5a742 {
-      width: 750rpx;
-      height: 700rpx;
-      background-color: #ffffff;
+.map-page .qiun-charts .charts.data-v-49c7631e {
+  width: 750rpx;
+  height: 700rpx;
+  background-color: #ffffff;
 }
-.map-page .swiper-container.data-v-23a5a742 {
-    position: relative;
+.map-page .swiper-container.data-v-49c7631e {
+  position: relative;
 }
-.map-page .swiper-container .pre.data-v-23a5a742 {
-      position: absolute;
-      top: 35%;
-      left: 10rpx;
-      width: 60rpx;
-      height: 60rpx;
-      border-radius: 50%;
+.map-page .swiper-container .pre.data-v-49c7631e {
+  position: absolute;
+  top: 35%;
+  left: 10rpx;
+  width: 60rpx;
+  height: 60rpx;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
-.map-page .swiper-container .next.data-v-23a5a742 {
-      position: absolute;
-      top: 35%;
-      right: 10rpx;
-      width: 60rpx;
-      height: 60rpx;
-      border-radius: 50%;
+.map-page .swiper-container .next.data-v-49c7631e {
+  position: absolute;
+  top: 35%;
+  right: 10rpx;
+  width: 60rpx;
+  height: 60rpx;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 

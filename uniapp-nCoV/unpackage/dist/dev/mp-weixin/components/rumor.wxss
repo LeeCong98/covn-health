@@ -24,20 +24,20 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.rumor-page.data-v-b8b2f85a {
+.rumor-page.data-v-58101b42 {
   padding-bottom: 120rpx;
 }
-.rumor-page .position-relative.data-v-b8b2f85a {
-    position: relative;
+.rumor-page .position-relative.data-v-58101b42 {
+  position: relative;
 }
-.rumor-page .position-relative image.data-v-b8b2f85a {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 140rpx;
-      height: 140rpx;
+.rumor-page .position-relative image.data-v-58101b42 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 140rpx;
+  height: 140rpx;
 }
-.rumor-page .text-ssm.data-v-b8b2f85a {
-    font-size: 30rpx;
+.rumor-page .text-ssm.data-v-58101b42 {
+  font-size: 30rpx;
 }
 
