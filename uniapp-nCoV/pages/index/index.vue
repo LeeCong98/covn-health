@@ -2,8 +2,8 @@
 	<view class="pages">
 		<v-map v-if="PageCur == 'map'"></v-map>
 		<real v-if="PageCur == 'real'"></real>
-		<rumor v-if="PageCur == 'rumor'"></rumor>
-		<virus v-if="PageCur == 'virus'"></virus>
+		<punch v-if="PageCur == 'punch'" />
+		<my-page v-if="PageCur == 'myPage'" />
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="map">
 				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/map' + [PageCur == 'map' ? '_cur' : ''] + '.png'"></image></view>
@@ -13,13 +13,13 @@
 				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/real' + [PageCur == 'real' ? '_cur' : ''] + '.png'"></image></view>
 				<view :class="PageCur == 'real' ? 'text-blue' : 'text'">实时疫情</view>
 			</view>
-			<view class="action" @click="NavChange" data-cur="rumor">
-				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/rumor' + [PageCur == 'rumor' ? '_cur' : ''] + '.png'"></image></view>
-				<view :class="PageCur == 'rumor' ? 'text-blue' : 'text'">权威辟谣</view>
+			<view class="action" @click="NavChange" data-cur="punch">
+				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/virus' + [PageCur == 'punch' ? '_cur' : ''] + '.png'"></image></view>
+				<view :class="PageCur == 'punch' ? 'text-blue' : 'text'">健康打卡</view>
 			</view>
-			<view class="action" @click="NavChange" data-cur="virus">
-				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/virus' + [PageCur == 'virus' ? '_cur' : ''] + '.png'"></image></view>
-				<view :class="PageCur == 'virus' ? 'text-blue' : 'text'">病毒知识</view>
+			<view class="action" @click="NavChange" data-cur="myPage">
+				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/rumor' + [PageCur == 'myPage' ? '_cur' : ''] + '.png'"></image></view>
+				<view :class="PageCur == 'myPage' ? 'text-blue' : 'text'">我的</view>
 			</view>
 		</view>
 	</view>
@@ -46,6 +46,6 @@ export default {
 	color: #707070;
 }
 .text-active {
-	color: #d4237a;
+	color: $uni-color-primary;
 }
 </style>
