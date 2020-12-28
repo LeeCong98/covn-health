@@ -15,8 +15,9 @@
           <u-input :border="border" type="password" v-model="model.rePassword" placeholder="请确认密码"></u-input>
         </u-form-item>
       </u-form>
-      <view class="tips">未注册的手机号验证后自动创建账号</view>
+      <!-- <view class="tips">未注册的手机号验证后自动创建账号</view> -->
       <button @tap="submit" :style="[inputStyle]" class="getCaptcha">提交</button>
+      <u-toast ref="uToast" />
       <view class="alternative">
         <view class="password" @click="register = !register">{{register ? '已有账号' : '注册账号'}}</view>
         <view class="issue" @click="goBack()">暂不登录</view>
@@ -76,9 +77,16 @@
       }
     },
     methods: {
+      showToast (val) {
+        this.$refs.uToast.show(val)
+      },
       submit() {
         this.$refs.uForm.validate(valid => {
-         
+          this.showToast({
+            title: '注册成功',
+            type: 'success',
+            // back: true
+          })
         });
       },
       goBack() {

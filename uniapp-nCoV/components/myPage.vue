@@ -4,9 +4,9 @@
       :back-text-style="{color: '#fff'}" :title="title">
     </u-navbar>
     <view class="nav-title" @click="login()">
-      <!-- <view class="logo">
+      <view class="logo">
         <u-avatar size="large" :src="src"></u-avatar>
-      </view> -->
+      </view>
       <view class="nav-info">
         <view class="nav-title__text">
           <!-- {{$t('common.title')}} -->
@@ -37,7 +37,8 @@
       <view class="left">
         <view class="title">今日打卡</view>
         <view class="bottom">
-          <view class="u-no-demo-here">未完成</view>
+          <view class="u-no-demo-here" style="color: #DD6161;" v-if="!isOk">未完成</view>
+          <view class="u-no-demo-here" style="color: #19BE6B;" v-else>未完成</view>
         </view>
       </view>
       <view class="right">
@@ -49,13 +50,13 @@
     </view>
     <view class="foot">
       <view class="left">
-        <view class="title">健康天数</view>
+        <view class="title" style="color: #19BE6B;">健康天数</view>
         <view class="bottom">
           <view class="u-no-demo-here">50天</view>
         </view>
       </view>
       <view class="right">
-        <view class="title">异常天数</view>
+        <view class="title" style="color: #DD6161;">异常天数</view>
         <view class="bottom">
           <view class="u-no-demo-here">200天</view>
         </view>
@@ -70,6 +71,8 @@
       return {
         title: '我的',
         right: false,
+        user: false,
+        isOk: false,
         showAction: false,
         background: {
           'background-image': 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
@@ -84,6 +87,9 @@
     },
     methods: {
       login() {
+        if (this.user) {
+          return
+        }
         this.$u.route({
           url: '/pages/login/index'
         })
@@ -129,12 +135,12 @@
 
       .title {
         font-size: 24px;
-        font-weight: bold;
+        // font-weight: bold;
         margin-bottom: 20px;
       }
       .bottom {
         font-size: 18px;
-        font-weight: bold;
+        // font-weight: bold;
       }
     }
   }
@@ -168,7 +174,7 @@
     /* #endif */
     color: $u-main-color;
     font-size: 25px;
-    font-weight: bold;
+    // font-weight: bold;
   }
 
   .logo {
