@@ -360,6 +360,14 @@
         this.$refs.uForm.validate(valid => {
           if (valid) {
             if (this.userInfo) {
+              uni.request({
+                url: this.base + '/sign/signreal',
+                data: valid,
+                method: 'POST',
+                success (res) {
+                  this.showToast(val)
+                }
+              })
               val = {
                 title: '打卡成功',
                 type: 'success',
@@ -370,8 +378,8 @@
                 type: 'error',
                 url: '/pages/userInfo/index'
               }
+              this.showToast(val)
             }
-            this.showToast(val)
           }
         });
       },

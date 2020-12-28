@@ -14,11 +14,11 @@ Vue.component("v-map",map)
 import real from './components/real.vue'
 Vue.component("real",real)
 
-// import rumor from './components/rumor.vue'
-// Vue.component("rumor",rumor)
+import rumor from './components/rumor.vue'
+Vue.component("rumor",rumor)
 
-// import virus from './components/virus.vue'
-// Vue.component("virus",virus)
+import virus from './components/virus.vue'
+Vue.component("virus",virus)
 
 import punch from './components/punch.vue'
 Vue.component("punch", punch)
@@ -27,6 +27,8 @@ Vue.component("myPage", myPage)
 
 Vue.config.productionTip = false
 Vue.use(uView)
+
+Vue.prototype.base = '127.0.0.1:8080'
 
 App.mpType = 'app'
 

@@ -4,7 +4,7 @@
     <view class="content">
       <view class="title">{{ register ? '欢迎注册' : '欢迎登录'}}</view>
       <u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
-        <u-form-item :label-position="labelPosition" label="账号" prop="password">
+        <u-form-item :label-position="labelPosition" label="账号" prop="id">
           <u-input class="u-border-bottom" :password-icon="true" :border="border" type="number" v-model="model.id"
             placeholder="请输入账号"></u-input>
         </u-form-item>
@@ -36,6 +36,16 @@
           password: ''
         },
         rules: {
+          id: [{
+            required: true,
+            message: '请输入账号',
+            trigger: ['change', 'blur'],
+          },{
+              // 正则不能含有两边的引号
+              pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]+\S{5,12}$/,
+              message: '需同时含有字母和数字，长度在6-12之间',
+              trigger: ['change', 'blur'],
+            }],
           password: [{
               required: true,
               message: '请输入密码',
@@ -49,20 +59,19 @@
             }
           ]
         },
-        rePassword: [
-					{
-						required: true,
-						message: '请重新输入密码',
-						trigger: ['change','blur'],
-					},
-					{
-						validator: (rule, value, callback) => {
-							return value === this.model.password;
-						},
-						message: '两次输入的密码不相等',
-						trigger: ['change','blur'],
-					}
-				],
+        rePassword: [{
+            required: true,
+            message: '请重新输入密码',
+            trigger: ['change', 'blur'],
+          },
+          {
+            validator: (rule, value, callback) => {
+              return value === this.model.password;
+            },
+            message: '两次输入的密码不相等',
+            trigger: ['change', 'blur'],
+          }
+        ],
       }
     },
     computed: {
@@ -77,17 +86,42 @@
       }
     },
     methods: {
-      showToast (val) {
+      showToast(val) {
         this.$refs.uToast.show(val)
       },
       submit() {
-        this.$refs.uForm.validate(valid => {
-          this.showToast({
-            title: '注册成功',
-            type: 'success',
-            // back: true
-          })
-        });
+        this.$refs.uForm.validate()
+        // if (this.register) {
+        //   this.$refs.uForm.validate(valid => {
+        //     uni.request({
+        //       url: this.base + '/login/register',
+        //       data: valid,
+        //       method: 'POST',
+        //       success(res) {
+        //         this.showToast({
+        //           title: '注册成功',
+        //           type: 'success',
+        //           // back: true
+        //         })
+        //       }
+        //     })
+        //   });
+        // } else {
+        //   this.$refs.uForm.validate(valid => {
+        //     uni.request({
+        //       url: this.base + '/login/login',
+        //       data: valid,
+        //       method: 'POST',
+        //       success(res) {
+        //         this.showToast({
+        //           title: '登陆成功',
+        //           type: 'success',
+        //           back: true
+        //         })
+        //       }
+        //     })
+        //   });
+        // } 
       },
       goBack() {
         uni.navigateBack({
@@ -101,6 +135,7 @@
 <style lang="scss" scoped>
   .wrap {
     font-size: 28rpx;
+
     .content {
       width: 600rpx;
       margin: 80rpx auto 0;
