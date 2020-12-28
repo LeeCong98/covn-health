@@ -25,7 +25,7 @@
       <u-form-item :label-position="labelPosition" label="确认密码" label-width="150" prop="rePassword">
         <u-input :border="border" type="password" v-model="model.rePassword" placeholder="请确认密码"></u-input>
       </u-form-item> -->
-     <!-- <u-form-item :label-position="labelPosition" label="水果品种" label-width="150" prop="likeFruit">
+      <!-- <u-form-item :label-position="labelPosition" label="水果品种" label-width="150" prop="likeFruit">
         <u-checkbox-group @change="checkboxGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
           <u-checkbox v-model="item.checked" v-for="(item, index) in checkboxList" :key="index" :name="item.name">{{ item.name }}</u-checkbox>
         </u-checkbox-group>
@@ -35,37 +35,38 @@
           @click="pickerShow = true"></u-input> -->
         <u-input :border="border" :disabled="true" v-model="model.address" type="text"></u-input>
       </u-form-item>
-      <u-form-item :label-position="labelPosition" label="健康状况" prop="payType" label-width="150">
-        <u-radio-group v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
+      <u-form-item :label-position="labelPosition" label="健康状况" prop="health" label-width="150">
+        <u-radio-group v-model="radio1" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
           <u-radio shape="circle" v-for="(item, index) in radioList" :key="index" :name="item.name">{{ item.name }}</u-radio>
         </u-radio-group>
       </u-form-item>
-      <u-form-item :label-position="labelPosition" label="是否隔离" prop="payType" label-width="150">
-        <u-radio-group v-model="radio" @change="radioGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
+      <u-form-item :label-position="labelPosition" label="是否隔离" prop="isolation" label-width="150">
+        <u-radio-group v-model="radio2" @change="radioGroupChange2" :width="radioCheckWidth" :wrap="radioCheckWrap">
           <u-radio shape="circle" v-for="(item, index) in radioList" :key="index" :name="item.name">{{ item.name }}</u-radio>
         </u-radio-group>
       </u-form-item>
-     <!-- <u-form-item :label-position="labelPosition" label="商品类型" prop="goodsType" label-width="150">
+      <!-- <u-form-item :label-position="labelPosition" label="商品类型" prop="goodsType" label-width="150">
         <u-input :border="border" type="select" :select-open="selectShow" v-model="model.goodsType" placeholder="请选择商品类型"
           @click="selectShow = true"></u-input>
       </u-form-item> -->
-     <!-- <u-form-item :label-position="labelPosition" label="验证码" prop="code" label-width="150">
+      <!-- <u-form-item :label-position="labelPosition" label="验证码" prop="code" label-width="150">
         <u-input :border="border" placeholder="请输入验证码" v-model="model.code" type="text"></u-input>
         <u-button slot="right" type="success" size="mini" @click="getCode">{{codeTips}}</u-button>
       </u-form-item> -->
       <!-- 此处switch的slot为right，如果不填写slot名，也即<u-switch v-model="model.remember"></u-switch>，将会左对齐 -->
     </u-form>
-    <view class="agreement">
+    <!-- <view class="agreement">
       <u-checkbox v-model="check" @change="checkboxChange"></u-checkbox>
       <view class="agreement-text">
         勾选代表同意uView的版权协议
       </view>
-    </view>
+    </view> -->
     <u-button @click="submit">提交</u-button>
+    <u-toast ref="uToast" />
     <u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
-    <u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select>
-    <u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
-    <u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+    <!-- <u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select> -->
+    <!--  <u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
+    <u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code> -->
     <!-- <view class="u-config-wrap">
       <view class="u-config-title u-border-bottom">
         参数配置
@@ -98,6 +99,9 @@
         title: '健康打卡',
         right: false,
         showAction: false,
+        radio1: true,
+        radio2: true,
+        userInfo: false,
         background: {
           'background-image': 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
         },
@@ -107,7 +111,8 @@
           sex: '',
           likeFruit: '',
           intro: '',
-          payType: '支付宝',
+          isolation: '正常',
+          health: '正常',
           agreement: false,
           region: '',
           goodsType: '',
@@ -300,7 +305,8 @@
             disabled: false
           },
         ],
-        radio: '支付宝',
+        radio1: '正常',
+        radio2: '正常',
         actionSheetList: [{
             text: '男'
           },
@@ -346,13 +352,26 @@
       this.$refs.uForm.setRules(this.rules);
     },
     methods: {
+      showToast(val) {
+        this.$refs.uToast.show(val)
+      },
       submit() {
+        let val = {}
         this.$refs.uForm.validate(valid => {
           if (valid) {
-            if (!this.model.agreement) return this.$u.toast('请勾选协议');
-            console.log('验证通过');
-          } else {
-            console.log('验证失败');
+            if (this.userInfo) {
+              val = {
+                title: '打卡成功',
+                type: 'success',
+              }
+            } else {
+              val = {
+                title: '用户个人信息未填写，请填写',
+                type: 'error',
+                url: '/pages/userInfo/index'
+              }
+            }
+            this.showToast(val)
           }
         });
       },
@@ -367,7 +386,10 @@
       },
       // radio选择发生变化
       radioGroupChange(e) {
-        this.model.payType = e;
+        this.model.health = e;
+      },
+      radioGroupChange2(e) {
+        this.model.isolation = e;
       },
       // 勾选版权协议
       checkboxChange(e) {

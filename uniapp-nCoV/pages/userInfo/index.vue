@@ -17,8 +17,8 @@
         <u-input :border="border" placeholder="请输入手机号" v-model="model.phone" type="number"></u-input>
       </u-form-item>
       <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" :label-position="labelPosition"
-        label="身份证号" prop="phone" label-width="150">
-        <u-input :border="border" placeholder="请输入身份证号" v-model="model.phone" type="number"></u-input>
+        label="身份证号" prop="idCard" label-width="150">
+        <u-input :border="border" placeholder="请输入身份证号" v-model="model.idCard" type="number"></u-input>
       </u-form-item>
       <!-- <u-form-item :label-position="labelPosition" label="简介" prop="intro">
         <u-input type="textarea" :border="border" placeholder="请填写简介" v-model="model.intro" />
@@ -46,6 +46,7 @@
       </view>
     </view>
     <u-button @click="submit">提交</u-button>
+    <u-toast ref="uToast" />
     <u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
     <u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select>
     <u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
@@ -91,6 +92,7 @@
           sex: '',
           likeFruit: '',
           intro: '',
+          idCard: '',
           payType: '支付宝',
           agreement: false,
           region: '',
@@ -212,6 +214,21 @@
               trigger: ['change', 'blur'],
             }
           ],
+          idCard: [{
+              required: true,
+              message: '请输入身份证号',
+              trigger: ['change', 'blur'],
+            },
+            {
+              validator: (rule, value, callback) => {
+                // 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+                return this.$u.test.idCard(value);
+              },
+              message: '身份证号不正确',
+              // 触发器可以同时用blur和change，二者之间用英文逗号隔开
+              trigger: ['change', 'blur'],
+            }
+          ],
           code: [{
               required: true,
               message: '请输入验证码',
@@ -327,11 +344,17 @@
       this.$refs.uForm.setRules(this.rules);
     },
     methods: {
+      showToast () {
+        this.$refs.uToast.show({
+          title: '填写完成',
+          type: 'success',
+          back: true
+        })
+      },
       submit() {
         this.$refs.uForm.validate(valid => {
           if (valid) {
-            if (!this.model.agreement) return this.$u.toast('请勾选协议');
-            console.log('验证通过');
+            this.showToast()
           } else {
             console.log('验证失败');
           }

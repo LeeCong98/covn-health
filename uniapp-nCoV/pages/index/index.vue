@@ -13,6 +13,14 @@
 				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/real' + [PageCur == 'real' ? '_cur' : ''] + '.png'"></image></view>
 				<view :class="PageCur == 'real' ? 'text-blue' : 'text'">实时疫情</view>
 			</view>
+      <view class="action" @click="NavChange" data-cur="virus">
+      	<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/virus' + [PageCur == 'virus' ? '_cur' : ''] + '.png'"></image></view>
+      	<view :class="PageCur == 'virus' ? 'text-blue' : 'text'">病毒知识</view>
+      </view>
+      <view class="action" @click="NavChange" data-cur="rumor">
+      	<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/rumor' + [PageCur == 'rumor' ? '_cur' : ''] + '.png'"></image></view>
+      	<view :class="PageCur == 'rumor' ? 'text-blue' : 'text'">辟谣</view>
+      </view>
 			<view class="action" @click="NavChange" data-cur="punch">
 				<view class="cuIcon-cu-image"><image :src="'../../static/tabbar_img/virus' + [PageCur == 'punch' ? '_cur' : ''] + '.png'"></image></view>
 				<view :class="PageCur == 'punch' ? 'text-blue' : 'text'">健康打卡</view>
