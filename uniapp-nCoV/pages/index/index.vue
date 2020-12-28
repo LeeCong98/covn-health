@@ -2,6 +2,8 @@
 	<view class="pages">
 		<v-map v-if="PageCur == 'map'"></v-map>
 		<real v-if="PageCur == 'real'"></real>
+    <rumor v-if="PageCur == 'rumor'"></rumor>
+    <virus v-if="PageCur == 'virus'"></virus>
 		<punch v-if="PageCur == 'punch'" />
 		<my-page v-if="PageCur == 'myPage'" />
 		<view class="cu-bar tabbar bg-white shadow foot">

@@ -354,7 +354,14 @@
       submit() {
         this.$refs.uForm.validate(valid => {
           if (valid) {
-            this.showToast()
+            uni.request({
+              url: '',
+              data: valid,
+              method: 'POST',
+              success (res) {
+                this.showToast()
+              }
+            })
           } else {
             console.log('验证失败');
           }
