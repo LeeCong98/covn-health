@@ -57,11 +57,7 @@ export default {
 			uni.request({
 				method: 'GET',
 				url: 'http://127.0.0.1:3001/Timeline',
-<<<<<<< HEAD
-				success: res => {
-=======
 				success: ({ data  }) => {
->>>>>>> 4cb29eeaf68d888ffd7c937c494014be3eca6827
 					setTimeout(() => {
 						this.loading = true
 					}, 500);
